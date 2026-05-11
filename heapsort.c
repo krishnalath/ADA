@@ -13,12 +13,9 @@ void heapify(int H[], int n) {
         while (!heap && 2 * k <= n) {
 
             int j = 2 * k;
-
-            // Find larger child
             if (j < n && H[j] < H[j + 1])
                 j = j + 1;
 
-            // Check heap property
             if (v >= H[j])
                 heap = true;
             else {
@@ -36,13 +33,9 @@ void heapsort(int H[], int n) {
     heapify(H, n);
 
     for (int i = n; i >= 2; i--) {
-
-        // Swap root with last element
         int temp = H[1];
         H[1] = H[i];
         H[i] = temp;
-
-        // Rebuild heap
         heapify(H, i - 1);
     }
 }
@@ -81,6 +74,4 @@ int main() {
 
     printf("Input size: %d\n", n);
     printf("Execution time: %.5f ms\n", cpu_time_used);
-
-    return 0;
 }
