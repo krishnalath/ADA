@@ -1,8 +1,3 @@
-
-Kritika Panwar
-9:22 AM (0 minutes ago)
-to me
-
 #include <stdio.h>
 
 #define MAX 100
