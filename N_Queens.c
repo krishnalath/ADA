@@ -1,34 +1,50 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int x[20];
-int place(int k,int i){
-    for(int j=1;j<k;j++){
-        if(x[j]==i || (abs(k-j)==abs(i-x[j])))
+int pos[20];
+
+int safe(int row, int col)
+{
+    for(int i = 0; i < row; i++)
+    {
+        if(pos[i] == col ||
+           abs(pos[i] - col) == abs(i - row))
             return 0;
     }
     return 1;
 }
 
-void nQueens(int k,int n){
-    for(int i=1;i<=n;i++){
-        if(place(k,i)){
-            x[k]=i;
-            if(k==n){
-                    printf("\n");
-                for(int j=1;j<=n;j++){
-                    printf("\nRow: %d , Column: %d",j,x[j]);
-                }
+void solve(int row, int n)
+{
+    if(row == n)
+    {
+        printf("\nSolution:\n");
 
-            }else nQueens(k+1,n);
+        for(int i = 0; i < n; i++)
+            printf("Row %d -> Column %d\n",
+                    i+1, pos[i]+1);
+
+        return;
+    }
+
+    for(int col = 0; col < n; col++)
+    {
+        if(safe(row,col))
+        {
+            pos[row] = col;
+            solve(row+1,n);
         }
     }
 }
 
-int main(){
+int main()
+{
     int n;
-    printf("Enter number of queens: ");
+
+    printf("Enter N: ");
     scanf("%d",&n);
-    nQueens(1,n);
+
+    solve(0,n);
+
     return 0;
 }
