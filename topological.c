@@ -1,89 +1,41 @@
 #include <stdio.h>
 
-#define MAX 100
-
-int graph[MAX][MAX];
-int indegree[MAX];
-int queue[MAX];
-int front = 0, rear = 0;
-
-void topologicalSort(int n)
-{
-    int i, j, count = 0;
-
-    // Calculate indegree of each vertex
-    for(i = 0; i < n; i++)
-    {
-        indegree[i] = 0;
-    }
-
-    for(i = 0; i < n; i++)
-    {
-        for(j = 0; j < n; j++)
-        {
-            if(graph[i][j] == 1)
-            {
-                indegree[j]++;
-            }
-        }
-    }
-
-    // Insert vertices with indegree 0 into queue
-    for(i = 0; i < n; i++)
-    {
-        if(indegree[i] == 0)
-        {
-            queue[rear++] = i;
-        }
-    }
-
-    printf("Topological Ordering: ");
-
-    while(front < rear)
-    {
-        int vertex = queue[front++];
-        printf("%d ", vertex);
-        count++;
-
-        // Reduce indegree of adjacent vertices
-        for(i = 0; i < n; i++)
-        {
-            if(graph[vertex][i] == 1)
-            {
-                indegree[i]--;
-
-                if(indegree[i] == 0)
-                {
-                    queue[rear++] = i;
-                }
-            }
-        }
-    }
-
-    // Check for cycle
-    if(count != n)
-    {
-        printf("\nGraph contains a cycle. Topological ordering not possible.");
-    }
-}
-
-int main()
-{
-    int n, i, j;
-
+int main() {
+    int n,count;
     printf("Enter number of vertices: ");
-    scanf("%d", &n);
-
-    printf("Enter adjacency matrix:\n");
-
-    for(i = 0; i < n; i++)
-    {
-        for(j = 0; j < n; j++)
-        {
-            scanf("%d", &graph[i][j]);
+    scanf("%d",&n);
+    int graph[n][n],indegree[n];
+    for(int i=0;i<n;i++)
+        indegree[i]=0;
+        
+    printf("Enter adjacency matrix: ");
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            scanf("%d",&graph[i][j]);
+            if(graph[i][j])
+                indegree[j]++;
         }
     }
-
-    topologicalSort(n);
+    int queue[100],front=0,rear=0;
+    printf("TOPOLOGICAL SORTING: \n");
+    for(int i=0;i<n;i++){
+        if(indegree[i]==0)
+            queue[rear++]=i;
+    }
+    
+    while(front<rear){
+        int u=queue[front++];
+        printf("%d ",u);
+        count++;
+        for(int v=0;v<n;v++){
+            if(graph[u][v]){
+                indegree[v]--;
+                if(indegree[v]==0)
+                    queue[rear++]=v;
+            }}
+    }
+    if(count!=n)
+        printf("is not possible for cyclic graph");
 
     return 0;
+}
