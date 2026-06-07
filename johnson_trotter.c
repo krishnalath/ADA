@@ -1,46 +1,52 @@
 #include <stdio.h>
-
-int mobile(int p[],int d[],int n){
-    int m=-1;
+int getMobile(int p[],int d[],int n){
+    int mobile=0;
+    int mobilePos=-1;
     for(int i=0;i<n;i++){
-        if(d[i]==-1 && i>0 && p[i]>p[i-1] && p[i]>m)
-            m=p[i];
-        if(d[i]==1 && i<n-1 && p[i]>p[i+1] && p[i]>m)
-            m=p[i];
+        if(d[i]==-1 && i!=0){
+            if(p[i]>p[i-1] && p[i]>mobile){
+                mobile=p[i];
+                mobilePos=i;
+            }
+        }
+        if(d[i]==1 && i!=n-1){
+            if(p[i]>p[i+1] && p[i]>mobile){
+                mobile=p[i];
+                mobilePos=i;
+            }
+        }
     }
-    return m;
+    return mobilePos;
 }
-
-int main(){
+int main() {
     int n;
-    printf("Enter n: ");
+    printf("Enter number of digits: ");
     scanf("%d",&n);
     int p[n],d[n];
     for(int i=0;i<n;i++){
-        d[i]=-1;
         p[i]=i+1;
+        d[i]=-1;
     }
     while(1){
         for(int i=0;i<n;i++)
             printf("%d",p[i]);
         printf("\n");
-        int m=mobile(p,d,n);
-        if(m==-1) break;
-        int pos;
+        int pos = getMobile(p,d,n);
+        if(pos==-1) break;
+        int swapPos;
+        if(d[pos]==-1)
+            swapPos=pos-1;
+        if(d[pos]==1)
+            swapPos=pos+1;
+        int temp=d[pos];
+        d[pos]=d[swapPos];
+        d[swapPos]=temp;
+        temp=p[pos];
+        p[pos]=p[swapPos];
+        p[swapPos]=temp;
+        pos=swapPos;
         for(int i=0;i<n;i++){
-            if(p[i]==m)
-                pos = i;
-        }
-        int next = pos+d[pos];
-        int temp = p[pos];
-        p[pos]=p[next];
-        p[next]=temp;
-        temp=d[pos];
-        d[pos]=d[next];
-        d[next]=temp;
-
-        for(int i=0;i<n;i++){
-            if(p[i]>m)
+            if(p[i]>p[pos])
                 d[i]=-d[i];
         }
     }
