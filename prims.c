@@ -1,68 +1,50 @@
 #include <stdio.h>
-
-#define MAX 10
-#define INF 999
-
-int main()
-{
-    int cost[MAX][MAX];
-    int visited[MAX] = {0};
-
-    int n, i, j;
-    int min, a, b;
-    int edges = 0;
-    int minCost = 0;
-
+#include <limits.h>
+int main() {
+    int n;
     printf("Enter number of vertices: ");
-    scanf("%d", &n);
-
-    printf("Enter adjacency matrix:\n");
-
-    for(i = 0; i < n; i++)
-    {
-        for(j = 0; j < n; j++)
-        {
-            scanf("%d", &cost[i][j]);
-
-            if(cost[i][j] == 0)
-                cost[i][j] = INF;
+    scanf("%d",&n);
+    int cost[n][n],visited[n];
+    printf("Enter adj matrix: ");
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            scanf("%d",&cost[i][j])
+            if(i!=j && cost[i][j]==0)
+                cost[i][j]=INT_MAX;
         }
     }
-
-    // Start from vertex 0
-    visited[0] = 1;
-
-    printf("Edges in MST:\n");
-
-    while(edges < n - 1)
-    {
-        min = INF;
-        for(i = 0; i < n; i++)
-        {
-            if(visited[i])
-            {
-                for(j = 0; j < n; j++)
-                {
-                    if(!visited[j] && cost[i][j] < min)
-                    {
+    
+    for(int i=0;i<n;i++)
+        visited[i]=0;
+        
+    visited[0]=1;
+    int edges = 0;
+    int minCost=0;
+    printf("Edges in MST: \n");
+    while(edges<n-1){
+        int min=INT_MAX;
+        int u=-1,v=-1;
+        for(int i=0;i<n;i++){
+            if(visited[i]){
+                for(int j=0;j<n;j++){
+                    if(!visited[j] && cost[i][j]<min){
                         min = cost[i][j];
-                        a = i;
-                        b = j;
+                        u=i;
+                        v=j;
                     }
                 }
             }
         }
-
-        printf("%d - %d = %d\n", a, b, min);
-
-        minCost += min;
-
-        visited[b] = 1;
-
+        if (u == -1 || v == -1) {
+            printf("Graph is disconnected.\n");
+            return 0;
+        }
+        
+        printf("%d -> %d = %d\n",u,v,min);
+        minCost+=min;
+        visited[v]=1;
         edges++;
     }
-
-    printf("Minimum Cost = %d\n", minCost);
-
+    printf("Minimum cost is %d: ",minCost);
     return 0;
 }
