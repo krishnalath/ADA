@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 int lomutoPartition(int arr[], int low, int high)
 {
     int pivot = arr[low];
@@ -40,31 +41,23 @@ int quickSelect(int arr[], int low, int high, int k)
 int main()
 {
     int n;
-
     printf("Enter number of elements: ");
     scanf("%d",&n);
 
     int arr[n];
 
     printf("Enter elements: ");
-
     for(int i=0;i<n;i++)
         scanf("%d",&arr[i]);
 
-    int median;
+    int k;
 
-    if(n%2==1)
-    {
-        median = quickSelect(arr,0,n-1,(n+1)/2);
-        printf("Median = %d",median);
-    }
-    else
-    {
-        int m1 = quickSelect(arr,0,n-1,n/2);
-        int m2 = quickSelect(arr,0,n-1,n/2+1);
+    printf("Enter k: ");
+    scanf("%d",&k);
 
-        printf("Median = %.2f",(m1+m2)/2.0);
-    }
+    int ans = quickSelect(arr,0,n-1,k);
+
+    printf("%d-th smallest element = %d",k,ans);
 
     return 0;
 }
